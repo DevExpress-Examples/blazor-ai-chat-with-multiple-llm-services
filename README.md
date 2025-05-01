@@ -5,7 +5,7 @@
 <!-- default badges end -->
 # Blazor AI Chat — Build a Multi-LLM Chat Application
 
-This example implements a multi-LLM (Large Language Model) chat application. The key points are:
+This example implements a multi-LLM (Large Language Model) chat application. Key considerations include:
 
 * The application uses two models: GPT-4o from Azure OpenAI and Phi4 from Ollama running locally.
 * The `IChatClient` interface implementation manages chat clients and conversation histories.
@@ -13,7 +13,7 @@ This example implements a multi-LLM (Large Language Model) chat application. The
 
 ![Multi-LLM Chat Application](ai-chat-with-multi-LLM.png)
 
-This example represents as a practical implementation of actions described in the following blog post: [DevExpress Blazor AI Chat — Build a Multi-LLM Chat Application](https://int.devexpress.com/community/blogs/aspnet/archive/2025/04/16/devexpress-blazor-ai-chat-build-a-multi-llm-chat-application.aspx). Read the post for implementation details.
+This example is based on the following blog post: [DevExpress Blazor AI Chat — Build a Multi-LLM Chat Application](https://int.devexpress.com/community/blogs/aspnet/archive/2025/04/16/devexpress-blazor-ai-chat-build-a-multi-llm-chat-application.aspx).
 
 > [!NOTE]  
 > Before launch, add your credentials in the [appsettings.Development.json](CS/DXBlazorCompositeChatClient/appsettings.Development.json) file.
