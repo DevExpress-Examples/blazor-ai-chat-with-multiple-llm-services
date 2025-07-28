@@ -7,14 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.2" />
-        <PackageReference Include="DevExpress.AIIntegration.Blazor.Chat" Version="24.2.6" />
-        <PackageReference Include="DevExpress.AIIntegration.Blazor.Common" Version="24.2.6" />
-        <PackageReference Include="DevExpress.AIIntegration.OpenAI" Version="24.2.6" />
-        <PackageReference Include="DevExpress.Blazor.Themes" Version="24.2.6" />
-        <PackageReference Include="Microsoft.Extensions.AI" Version="9.3.0-preview.1.25161.3" />
-        <PackageReference Include="Microsoft.Extensions.AI.Ollama" Version="9.3.0-preview.1.25161.3" />
-        <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.3.0-preview.1.25161.3" />
+        <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.5" />
+        <PackageReference Include="DevExpress.AIIntegration.Blazor.Chat" Version="25.1.3" />
+        <PackageReference Include="DevExpress.AIIntegration.Blazor.Common" Version="25.1.3" />
+        <PackageReference Include="DevExpress.AIIntegration.OpenAI" Version="25.1.3" />
+        <PackageReference Include="DevExpress.Blazor.Themes" Version="25.1.3" />
+        <PackageReference Include="Microsoft.Extensions.AI" Version="9.7.1" />
+        <PackageReference Include="Microsoft.Extensions.AI.Ollama" Version="9.7.0-preview.1.25356.2" />
+        <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="9.7.1-preview.1.25365.4" />
 
     </ItemGroup>
 

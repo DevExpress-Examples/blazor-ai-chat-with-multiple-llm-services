@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddDevExpressBlazor(options => { options.BootstrapVersion = DevExpress.Blazor.BootstrapVersion.v5; });
+builder.Services.AddDevExpressBlazor();
 builder.Services.AddMvc();
 
 // Replace with your endpoint, API key, and deployed AI model name
@@ -19,7 +19,7 @@ var ollamaSettings = builder.Configuration.GetSection("OllamaSettings").Get<Olla
 
 var azureChatClient = new AzureOpenAIClient(
      new Uri(openAiServiceSettings.Endpoint),
-     new AzureKeyCredential(openAiServiceSettings.Key)).AsChatClient(openAiServiceSettings.DeploymentName);
+     new AzureKeyCredential(openAiServiceSettings.Key)).GetChatClient(openAiServiceSettings.DeploymentName).AsIChatClient();
 var ollamaChatClient = new OllamaChatClient(
     new Uri(ollamaSettings.Uri), 
     ollamaSettings.ModelName);
