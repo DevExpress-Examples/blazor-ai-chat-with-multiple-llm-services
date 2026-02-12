@@ -19,7 +19,7 @@ This example implements a multi-LLM (Large Language Model) chat application. Key
 > * `Microsoft.Extensions.AI.OpenAI` | **9.7.1-preview.1.25365.4**
 > * `Azure.AI.OpenAI` | **2.2.0-beta.5**
 >
-> We do not guarantee compatibility or correct operation with higher versions. Refer to the following announcement for additional information: [DevExpress.AIIntegration moves to a stables version](https://supportcenter.devexpress.com/ticket/details/t1292705/devexpress-aiintegration-references-stable-versions-of-microsoft-ai-packages).
+> We do not guarantee compatibility or correct operation with higher versions. Refer to the following announcement for additional information: [DevExpress.AIIntegration moves to a stable version](https://supportcenter.devexpress.com/ticket/details/t1292705/devexpress-aiintegration-references-stable-versions-of-microsoft-ai-packages).
 
 ![Multi-LLM Chat Application](ai-chat-with-multi-LLM.png)
 
@@ -54,3 +54,4 @@ This example is based on the following blog post: [DevExpress Blazor AI Chat —
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
