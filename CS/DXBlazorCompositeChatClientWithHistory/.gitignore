@@ -1,0 +1,30 @@
+## .NET
+bin/
+obj/
+publish/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider
+.idea/
+*.sln.iml
+**/*.DotSettings.user
+
+## VS Code
+.vscode/
+
+## Visual Studio
+.vs/
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## User secrets / local overrides
+appsettings.*.local.json
+
+t

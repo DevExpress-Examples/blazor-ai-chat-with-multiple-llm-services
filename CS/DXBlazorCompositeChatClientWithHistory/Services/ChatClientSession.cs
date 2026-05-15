@@ -1,18 +1,17 @@
-using DevExpress.AIIntegration.Blazor.Chat;
 using Microsoft.Extensions.AI;
 
 namespace DXBlazorChatSelector.Services;
 
 public class ChatClientSession
 {
+    public string Id { get; }
     public string Name { get; set; }
     public IChatClient Client { get; }
-    public List<BlazorChatMessage> Messages { get; set; }
 
-    public ChatClientSession(IChatClient client, string name)
+    public ChatClientSession(IChatClient client, string id, string name)
     {
+        Id = string.IsNullOrWhiteSpace(id) ? throw new ArgumentException("Session id cannot be empty.", nameof(id)) : id;
         Name = name;
         Client = client ?? throw new ArgumentNullException(nameof(client));
-        Messages = new List<BlazorChatMessage>();
     }
 }

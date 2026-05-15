@@ -1,0 +1,232 @@
+﻿@page "/"
+@implements IDisposable
+@using DevExpress.AIIntegration.Blazor.Chat
+@using DXBlazorChatSelector.Services
+
+<div class="chat-page">
+    <DxSplitter CssClass="chat-splitter" Height="100%">
+        <Panes>
+            <DxSplitterPane Size="320px" MinSize="220px" MaxSize="500px">
+                <div class="chat-sidebar">
+                    <div class="sidebar-button-host">
+                        <DxButton RenderStyle="ButtonRenderStyle.Primary"
+                                  RenderStyleMode="ButtonRenderStyleMode.Contained"
+                                  IconCssClass="oi oi-plus"
+                                  IconPosition="ButtonIconPosition.BeforeText"
+                                  CssClass="new-chat-button"
+                                  Text="New Chat"
+                                  Click="CreateNewThreadAsync" />
+                    </div>
+
+                    <div class="sidebar-combo-host">
+                        <DxComboBox Data="@ModelsList"
+                                    Value="@SelectedModel"
+                                    CssClass="model-selector"
+                                    TextFieldName="@nameof(ChatClientSession.Name)"
+                                    ValueChanged="@((ChatClientSession session) => OnSelectedThreadModelChangedAsync(session))" />
+                    </div>
+
+                    <div class="thread-list-host">
+                        <DxListBox Data="@Threads"
+                                   Value="@SelectedThread"
+                                   ValueChanged="@((ChatThread thread) => OnThreadSelectedAsync(thread))"
+                                   TextFieldName="@nameof(ChatThread.Title)"
+                                   CssClass="thread-list">
+                            <ItemDisplayTemplate>
+                                <div class="thread-list-item">
+                                    <div class="thread-title">@context.DataItem.Title</div>
+                                    <div class="thread-model">@GetModelName(context.DataItem.ModelSessionId)</div>
+                                </div>
+                            </ItemDisplayTemplate>
+                        </DxListBox>
+                    </div>
+                </div>
+            </DxSplitterPane>
+            <DxSplitterPane>
+                <div class="chat-pane">
+                    <DxAIChat @ref="DxAiChat"
+                              CssClass="chat-control"
+                              Initialized="OnChatInitialized" />
+                </div>
+            </DxSplitterPane>
+        </Panes>
+    </DxSplitter>
+</div>
+
+@code {
+    [Inject] CompositeChatClient? ChatClientProvider { get; set; }
+    [Inject] IChatThreadStore? ChatThreadStore { get; set; }
+
+    private DxAIChat? DxAiChat { get; set; }
+    private List<ChatThread> Threads { get; set; } = new();
+    private ChatThread? SelectedThread { get; set; }
+    private ChatClientSession? SelectedModel { get; set; }
+    private bool _chatReady;
+
+    private List<ChatClientSession> ModelsList => ChatClientProvider?.AvailableChatClients ?? new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ChatClientProvider is not null)
+        {
+            ChatClientProvider.ThreadTitleUpdated += OnThreadTitleUpdated;
+        }
+
+        await ReloadThreadsAsync();
+        if (Threads.Count == 0)
+        {
+            await CreateNewThreadAsync();
+            return;
+        }
+
+        SelectedThread = Threads[0];
+        ApplyModelForSelectedThread();
+        UpdateActiveThreadContext();
+    }
+
+    private void OnChatInitialized(IAIChat chat)
+    {
+        _chatReady = true;
+        LoadSelectedThreadMessages();
+    }
+
+    private async Task CreateNewThreadAsync()
+    {
+        if (ChatThreadStore is null || ChatClientProvider is null)
+        {
+            return;
+        }
+
+        await SaveCurrentThreadMessagesAsync();
+
+        var model = SelectedModel ?? ChatClientProvider.GetRequiredSelectedSession();
+        var newThread = await ChatThreadStore.CreateThreadAsync(model.Id);
+        await ReloadThreadsAsync(newThread.Id);
+        ApplyModelForSelectedThread();
+        UpdateActiveThreadContext();
+        LoadSelectedThreadMessages();
+        StateHasChanged();
+    }
+
+    private async Task OnThreadSelectedAsync(ChatThread thread)
+    {
+        if (thread is null || SelectedThread?.Id == thread.Id || ChatThreadStore is null)
+        {
+            return;
+        }
+
+        await SaveCurrentThreadMessagesAsync();
+        await ReloadThreadsAsync(thread.Id);
+        ApplyModelForSelectedThread();
+        UpdateActiveThreadContext();
+        LoadSelectedThreadMessages();
+    }
+
+    private async Task OnSelectedThreadModelChangedAsync(ChatClientSession session)
+    {
+        if (session is null || SelectedThread is null || ChatThreadStore is null || ChatClientProvider is null)
+        {
+            return;
+        }
+
+        await SaveCurrentThreadMessagesAsync();
+        SelectedModel = session;
+        ChatClientProvider.SelectedSession = session;
+        SelectedThread.ModelSessionId = session.Id;
+        await ChatThreadStore.UpdateModelSessionAsync(SelectedThread.Id, session.Id);
+        await ReloadThreadsAsync(SelectedThread.Id);
+        UpdateActiveThreadContext();
+        LoadSelectedThreadMessages();
+    }
+
+    private async Task SaveCurrentThreadMessagesAsync()
+    {
+        if (!_chatReady || SelectedThread is null || DxAiChat is null || ChatThreadStore is null)
+        {
+            return;
+        }
+
+        var messages = DxAiChat.SaveMessages().ToList();
+        SelectedThread.Messages = messages;
+        await ChatThreadStore.SaveMessagesAsync(SelectedThread.Id, messages);
+    }
+
+    private void ApplyModelForSelectedThread()
+    {
+        if (ChatClientProvider is null || SelectedThread is null)
+        {
+            return;
+        }
+
+        var selectedModel = ChatClientProvider.AvailableChatClients.FirstOrDefault(x => x.Id == SelectedThread.ModelSessionId)
+                            ?? ChatClientProvider.AvailableChatClients.FirstOrDefault();
+
+        if (selectedModel is null)
+        {
+            return;
+        }
+
+        SelectedModel = selectedModel;
+        ChatClientProvider.SelectedSession = selectedModel;
+    }
+
+    private void LoadSelectedThreadMessages()
+    {
+        if (!_chatReady || DxAiChat is null || SelectedThread is null)
+        {
+            return;
+        }
+
+        DxAiChat.LoadMessages(SelectedThread.Messages);
+    }
+
+    private async Task ReloadThreadsAsync(Guid? selectedThreadId = null)
+    {
+        if (ChatThreadStore is null)
+        {
+            return;
+        }
+
+        Threads = (await ChatThreadStore.GetThreadsAsync()).ToList();
+        if (Threads.Count == 0)
+        {
+            SelectedThread = null;
+            return;
+        }
+
+        if (selectedThreadId is null)
+        {
+            SelectedThread ??= Threads[0];
+            return;
+        }
+
+        SelectedThread = Threads.FirstOrDefault(t => t.Id == selectedThreadId.Value) ?? Threads[0];
+    }
+
+    private void UpdateActiveThreadContext()
+    {
+        ChatClientProvider?.SetActiveThread(SelectedThread?.Id);
+    }
+
+    private void OnThreadTitleUpdated(Guid threadId, string title)
+    {
+        _ = InvokeAsync(async () => {
+            await ReloadThreadsAsync(SelectedThread?.Id);
+            StateHasChanged();
+        });
+    }
+
+    private string GetModelName(string modelSessionId)
+    {
+        var model = ModelsList.FirstOrDefault(x => x.Id == modelSessionId);
+        return model?.Name ?? "Unknown model";
+    }
+
+    public void Dispose()
+    {
+        if (ChatClientProvider is not null)
+        {
+            ChatClientProvider.ThreadTitleUpdated -= OnThreadTitleUpdated;
+        }
+    }
+}
