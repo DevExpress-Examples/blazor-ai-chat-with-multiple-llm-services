@@ -122,7 +122,7 @@ To support streaming responses, our chat implementation uses the default message
 
 ### Dynamic Title Generation
 
-[CompositeChatClient](CS/DXBlazorCompositeChatClientWithHistory/Services/CompositeChatClient.cs) intercepts user prompts using `GetResponseAsync` / `GetStreamingResponseAsync`. The selected AI model [generates](CS/DXBlazorCompositeChatClient/Services/IChatThreadTitleGenerator.cs) an automatic thread title (3–6 words) from the first user prompt in the background.
+[CompositeChatClient](CS/DXBlazorCompositeChatClientWithHistory/Services/CompositeChatClient.cs) intercepts user prompts using `GetResponseAsync` / `GetStreamingResponseAsync`. The selected AI model [generates](CS/DXBlazorCompositeChatClientWithHistory/Services/IChatThreadTitleGenerator.cs) an automatic thread title (3–6 words) from the first user prompt in the background.
 
 In case of failure, the first six words of the user message serve as the title.
 
@@ -149,17 +149,17 @@ builder.Services.AddSingleton<IChatThreadStore, InMemoryChatThreadStore>();
 
 ## Files to Review
 
-- [Program.cs](CS/DXBlazorCompositeChatClient/Program.cs)
-- [appsettings.json](CS/DXBlazorCompositeChatClient/appsettings.json) (use [appsettings.Development.json](CS/DXBlazorCompositeChatClient/appsettings.Development.json) for your local development environment)
-- [Index.razor](CS/DXBlazorCompositeChatClient/Components/Pages/Index.razor)
-- [Index.razor.css](CS/DXBlazorCompositeChatClient/Components/Pages/Index.razor.css)
-- [CompositeChatClient.cs](CS/DXBlazorCompositeChatClient/Services/CompositeChatClient.cs)
-- [ChatClientSession.cs](CS/DXBlazorCompositeChatClient/Services/ChatClientSession.cs)
-- [ChatThread.cs](CS/DXBlazorCompositeChatClient/Services/ChatThread.cs)
-- [IChatThreadStore.cs](CS/DXBlazorCompositeChatClient/Services/IChatThreadStore.cs)
-- [InMemoryChatThreadStore.cs](CS/DXBlazorCompositeChatClient/Services/InMemoryChatThreadStore.cs)
-- [IChatThreadTitleGenerator.cs](CS/DXBlazorCompositeChatClient/Services/IChatThreadTitleGenerator.cs)
-- [ChatThreadTitleGenerator.cs](CS/DXBlazorCompositeChatClient/Services/ChatThreadTitleGenerator.cs)
+- [Program.cs](CS/DXBlazorCompositeChatClientWithHistory/Program.cs)
+- [appsettings.json](CS/DXBlazorCompositeChatClientWithHistory/appsettings.json) (use [appsettings.Development.json](CS/DXBlazorCompositeChatClientWithHistory/appsettings.Development.json) for your local development environment)
+- [Index.razor](CS/DXBlazorCompositeChatClientWithHistory/Components/Pages/Index.razor)
+- [Index.razor.css](CS/DXBlazorCompositeChatClientWithHistory/Components/Pages/Index.razor.css)
+- [CompositeChatClient.cs](CS/DXBlazorCompositeChatClientWithHistory/Services/CompositeChatClient.cs)
+- [ChatClientSession.cs](CS/DXBlazorCompositeChatClientWithHistory/Services/ChatClientSession.cs)
+- [ChatThread.cs](CS/DXBlazorCompositeChatClientWithHistory/Services/ChatThread.cs)
+- [IChatThreadStore.cs](CS/DXBlazorCompositeChatClientWithHistory/Services/IChatThreadStore.cs)
+- [InMemoryChatThreadStore.cs](CS/DXBlazorCompositeChatClientWithHistory/Services/InMemoryChatThreadStore.cs)
+- [IChatThreadTitleGenerator.cs](CS/DXBlazorCompositeChatClientWithHistory/Services/IChatThreadTitleGenerator.cs)
+- [ChatThreadTitleGenerator.cs](CS/DXBlazorCompositeChatClientWithHistory/Services/ChatThreadTitleGenerator.cs)
 
 ## Documentation
 
