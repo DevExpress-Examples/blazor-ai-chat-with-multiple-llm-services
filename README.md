@@ -59,7 +59,7 @@ For security reasons, secrets are stored in the [appsettings.json](CS/DXBlazorCo
     - `ModelName`: Local Ollama model
 
 > **Note**
-> Update [appsettings.Development.json](CS/DXBlazorCompositeChatClient/appsettings.Development.json) to test this example in your local development environment.
+> Update `appsettings.Development.json` to test this example in your local development environment.
 
 The following code in [Program.cs](CS/DXBlazorCompositeChatClientWithHistory/Program.cs) retrieves the provider API configuration. Modify this code if you prefer to keep keys in environment variables or User Secrets.
 
@@ -150,7 +150,7 @@ builder.Services.AddSingleton<IChatThreadStore, InMemoryChatThreadStore>();
 ## Files to Review
 
 - [Program.cs](CS/DXBlazorCompositeChatClientWithHistory/Program.cs)
-- [appsettings.json](CS/DXBlazorCompositeChatClientWithHistory/appsettings.json) (use [appsettings.Development.json](CS/DXBlazorCompositeChatClientWithHistory/appsettings.Development.json) for your local development environment)
+- [appsettings.json](CS/DXBlazorCompositeChatClientWithHistory/appsettings.json) (use `appsettings.Development.json` for your local development environment)
 - [Index.razor](CS/DXBlazorCompositeChatClientWithHistory/Components/Pages/Index.razor)
 - [Index.razor.css](CS/DXBlazorCompositeChatClientWithHistory/Components/Pages/Index.razor.css)
 - [CompositeChatClient.cs](CS/DXBlazorCompositeChatClientWithHistory/Services/CompositeChatClient.cs)
